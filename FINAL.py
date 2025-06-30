@@ -86,7 +86,7 @@ class AdaptiveArchitectureNet(nn.Module):
         return self.network(x)
 
 class ContinuousDQNAgent(nn.Module):
-    def __init__(self, state_size=10, hidden_size=128):
+    def __init__(self, state_size=12, hidden_size=128):
         super(ContinuousDQNAgent, self).__init__()
         
         self.fc1 = nn.Linear(state_size, hidden_size)
