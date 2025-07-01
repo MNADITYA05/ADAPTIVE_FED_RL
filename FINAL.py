@@ -385,7 +385,7 @@ class AdaptiveFedPruningRL:
         
         self.epsilon = max(self.epsilon_min, self.epsilon * self.epsilon_decay)
     
-    def adaptive_structured_prune(self, model, pruning_ratio, should_prune_prob, client_id):
+    def adaptive_unstructured_prune(self, model, pruning_ratio, should_prune_prob, client_id):
         if should_prune_prob < 0.5 or pruning_ratio < 0.01:
             return {name: torch.ones_like(param) for name, param in model.named_parameters() 
                    if param.requires_grad and param.dtype.is_floating_point}
@@ -631,7 +631,7 @@ class AdaptiveFedPruningRL:
         action_tuple = (value.item(), pruning_ratio.item(), should_prune.item())
         
         if should_prune.item() > 0.5 and current_sparsity < 0.8 and round_num >= 5:
-            mask = self.adaptive_structured_prune(model, pruning_ratio.item(), should_prune.item(), client_id)
+            mask = self.adaptive_unstructured_prune(model, pruning_ratio.item(), should_prune.item(), client_id)
             self.apply_mask(model, mask)
             self.client_masks[client_id] = mask
             
